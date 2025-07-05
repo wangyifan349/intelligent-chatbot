@@ -1,6 +1,6 @@
 # 智能聊天机器人 🤖
 
-这是一个基于 **Flask** 框架的智能聊天机器人，支持 **代码**、**医学**、**法律**、**各种知识** 等领域的知识查询。通过 **TF-IDF** 词袋模型和 **余弦相似度** 实现对用户问题的匹配，提供相应的答案。
+这是一个基于 **Flask** 框架的智能聊天机器人，支持 **代码**、**医学**、**法律**、**自定义的任何领域** 等领域的知识查询。通过 **TF-IDF** 词袋模型和 **余弦相似度** 实现对用户问题的匹配，提供相应的答案。
 
 ## 仓库地址 📌
 
@@ -39,12 +39,6 @@
    pip install -r requirements.txt
    ```
 
-   *如果没有 `requirements.txt`，请手动安装：*
-
-   ```bash
-   pip install flask scikit-learn jieba
-   ```
-
 3. **运行应用程序**
 
    ```bash
@@ -57,14 +51,16 @@
 
 ## 项目结构 📁
 
+```
+- app.py
+- requirements.txt
+- templates/
+  - chat.html
+```
+
 - **app.py**：主应用程序，包含后端逻辑和预设的问答对。
-- **templates/**
-  - **chat.html**：前端页面模板，构建聊天界面。
-- **static/**（如果有需要，可添加）
-  - **styles.css**：自定义的 CSS 样式表（可选）。
-  - **scripts.js**：自定义的 JavaScript 脚本（可选）。
-- **requirements.txt**：项目所需的 Python 库（可选）。
-- **LICENSE**：许可证文件。
+- **templates/chat.html**：前端页面模板，构建聊天界面。
+- **requirements.txt**：项目所需的 Python 库。
 
 ## 使用说明 💡
 
