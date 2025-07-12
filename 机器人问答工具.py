@@ -1,18 +1,34 @@
 # -*- coding: utf-8 -*-
 import json
 import os
-
+import re
 # --------------------------------------------------
 # 配置区
 # --------------------------------------------------
 LOCAL_QA_PATH = "external_qa.json"
 W_LCS = 0.8
 W_EDIT = 0.2
-
 # --------------------------------------------------
 # 内置问答字典
 # --------------------------------------------------
 QA_DICT = {
+    "你好": "你好！有什么可以帮您的吗？",
+    "你叫什么名字": "我是智能客服小助手。",
+    "怎么写一个 for 循环": """下面给你一个简单的 Python for 循环示例：
+
+for i in range(5):
+    # 打印当前 i 的值
+    print(f"当前 i = {i}")
+
+# 循环结束后的空行也会保留
+
+print("循环结束")
+""",
+    "谢谢": "不客气，很高兴为您服务！"
+}
+
+# 这是你“append”想要添加的内容，改成字典
+addition_dict = {
     # 日常工作
     "如何提高工作效率": """要提高工作效率，可以从以下几方面入手：
 1. 制定清晰的工作目标和计划，确定优先级；
@@ -106,6 +122,12 @@ QA_DICT = {
 5. 专业救援：尽快送往医院，由医务人员处理。"""
 }
 
+# 用 update 合并追加
+QA_DICT.update(addition_dict)
+
+# 如果想排序（按key排序）
+QA_DICT_sorted = dict(sorted(QA_DICT.items(), key=lambda item: item[0]))
+
 # --------------------------------------------------
 # 加载外部问答（仅本地 JSON）
 # --------------------------------------------------
@@ -126,9 +148,7 @@ def load_external_qa():
         value = data[key]
         if isinstance(key, str) and isinstance(value, str):
             qa[key] = value
-
     return qa
-
 # --------------------------------------------------
 # 计算最长公共子序列长度
 # --------------------------------------------------
@@ -153,9 +173,7 @@ def lcs_length(s1, s2):
                     dp[i][j] = dp[i-1][j]
                 else:
                     dp[i][j] = dp[i][j-1]
-
     return dp[n][m]
-
 # --------------------------------------------------
 # 计算编辑距离（Levenshtein Distance）
 # --------------------------------------------------
@@ -237,10 +255,8 @@ def find_top_k_answers(query, k):
         cnt += 1
 
     return topk
-
 # --------------------------------------------------
 # 组织回复
-# --------------------------------------------------
 def compose_reply(query, k):
     topk = find_top_k_answers(query, k)
     if len(topk) == 0:
@@ -254,30 +270,21 @@ def compose_reply(query, k):
         if index > 0:
             reply += "\n\n"
         reply += ans
-
     return reply
-
 # --------------------------------------------------
 # 主程序
-# --------------------------------------------------
-if __name__ == "__main__":
-    # 1. 合并本地外部问答（外部覆盖同键内置）
-    external = load_external_qa()
-    for key in external:
-        QA_DICT[key] = external[key]
+print("输入“退出”结束对话。")
+top_k = 1   # 这里预定义top_k的值，不接受用户输入
+while True:
+    user_input = input("用户: ").strip()
+    if user_input in ("退出", "再见", "bye"):
+        print("助手: 再见！祝您生活愉快！")
+        break
 
-    if len(external) > 0:
-        print("[系统] 已加载并合并 {} 条本地外部问答。".format(len(external)))
+    query = user_input  # 把用户输入赋给query变量
 
-    print("输入“退出”结束对话。")
-    while True:
-        user_input = input("用户: ").strip()
-        if user_input in ("退出", "再见", "bye"):
-            print("助手: 再见！祝您生活愉快！")
-            break
-
-        reply = compose_reply(user_input, 2)
-        print("助手:\n" + reply)
+    reply = compose_reply(query, top_k)
+    print("助手:\n" + reply)
 
 
 
