@@ -2,8 +2,13 @@ from sentence_transformers import SentenceTransformer
 import torch
 import torch.nn.functional as F
 
-# Load a pre-trained sentence transformer model
+# 1. 加载预训练模型
 model = SentenceTransformer('all-MiniLM-L6-v2')
+# 2. 保存到当前目录下的子文件夹，比如 "./all-MiniLM-L6-v2"
+model.save('./all-MiniLM-L6-v2')
+# 3. 验证：从本地加载
+model_local = SentenceTransformer('./all-MiniLM-L6-v2')
+
 
 # Biomedical QA dictionary using triple quotes for better formatting and to avoid escape issues
 QA_dict = {
