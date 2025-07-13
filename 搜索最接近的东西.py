@@ -53,20 +53,45 @@ def download_and_save_model(model_name: str, local_path: str) -> SentenceTransfo
         print(f"Loading model from '{local_path}' …")
         model = SentenceTransformer(local_path)
     return model
+import re
 
 def is_code(text: str) -> bool:
     """
-    简单启发式判定：若包含典型代码结构，则视为代码。
+    改进版代码检测：
+      - 检查常见的编程关键词：def, class, return, import, if, else, for, while, try, except, with, lambda 等
+      - 检查语法符号：大括号 { }, 方括号 [ ], 圆括号 (), 分号 ;, 赋值运算符 =, 箭头 ->, 双冒号 :: 等
+      - 检测行末缩进或多行缩进特征
+      - 检测常见注释符号：#, //, /* */
     """
     code_markers = [
-        r"\bdef\s+\w+\(",    # Python 函数定义
-        r"\bclass\s+\w+",    # Python 类定义
-        r"{.*}",             # 大括号
-        r";\s*$",            # 行尾分号
-        r"=\s*\w+\(",        # 赋值调用
-        r"#"                 # 注释
+        # 关键字
+        r"\bdef\s+\w+\(",            # Python 函数定义
+        r"\bclass\s+\w+",            # Python/Java/C++ 类定义
+        r"\breturn\b",               # return 语句
+        r"\bimport\b",               # import 语句
+        r"\bfrom\b",                 # from ... import
+        r"\bif\b|\belse\b|\belif\b", # 条件语句
+        r"\bfor\b|\bwhile\b",        # 循环
+        r"\btry\b|\bexcept\b|\bfinally\b",  # 异常处理
+        r"\bwith\b",                 # 上下文管理
+        r"\blambda\b",               # 匿名函数
+        r"\basync\b|\bawait\b",      # 异步
+        # 语法符号
+        r"[{}[\]();]",               # 花括号、方括号、圆括号、分号
+        r"=\s*[^=]",                 # 单个等号赋值（排除 ==）
+        r"->",                       # Python 注解或函数指针符号
+        r"::",                       # C++/Python 的双冒号
+        # 注释
+        r"#",                        # Python/Shell 注释
+        r"//",                       # C++/Java 行注释
+        r"/\*[\s\S]*?\*/",           # C 风格块注释
+        # 多行缩进特征
+        r"^\s{4,}",                  # 行开头 4 个及以上空格（常见代码缩进）
     ]
+
+    # 将所有模式用 OR 连接
     pattern = "|".join(code_markers)
+    # MULTILINE 支持 ^ 匹配行首
     return re.search(pattern, text, re.MULTILINE) is not None
 
 def encode_and_normalize(
