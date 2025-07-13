@@ -12,20 +12,118 @@ W_EDIT = 0.2
 # 内置问答字典
 # --------------------------------------------------
 QA_DICT = {
-    "你好": "你好！有什么可以帮您的吗？",
-    "你叫什么名字": "我是智能客服小助手。",
-    "怎么写一个 for 循环": """下面给你一个简单的 Python for 循环示例：
+    "你好": """你好！有什么可以帮您的吗？""",
+
+    "你叫什么名字": """我是智能客服小助手。""",
+
+    "怎么写一个 for 循环": """
+下面给你一个简单的 Python for 循环示例：
 
 for i in range(5):
     # 打印当前 i 的值
     print(f"当前 i = {i}")
 
-# 循环结束后的空行也会保留
-
 print("循环结束")
 """,
-    "谢谢": "不客气，很高兴为您服务！"
+
+    "谢谢": """不客气，很高兴为您服务！""",
+
+    # —— 新增内容开始 —— #
+
+    "联系方式": """
+您可以通过以下方式与我们取得联系：
+1. 邮箱：contact@example.com
+2. 电话：+86-10-1234-5678
+3. 微信：my_wechat_id
+4. LinkedIn：linkedin.com/in/your-profile
+""",
+
+    "通信方式": """
+我们支持邮件、电话、微信和在线即时消息。
+如需及时响应，建议添加微信或在工作时间内拨打电话。
+""",
+
+    "商业合作": """
+非常欢迎各类商业合作机会！
+请发送商务需求至邮箱 contact@example.com，
+我们会在 1-2 个工作日内与您取得联系。
+""",
+
+    "技术合作": """
+在技术研发、产品集成、创新项目等方面均可洽谈合作。
+详情请联系技术负责人：
+    邮箱：tech_lead@example.com
+    微信：my_wechat_id
+""",
+
+    "可以科技上合作吗": """当然可以！请告诉我们您的项目需求，我们会安排相关技术团队与您对接。"""
+    # —— 新增内容结束 —— #
 }
+
+QA_DICT.update({
+    # —— 联系方式与沟通 —— #
+    "电话是多少": """
+我们的客服电话：+86-10-1234-5678  
+服务时间：周一至周五 09:00–18:00（法定节假日除外）  
+如遇紧急事务，请在服务时间外微信联系。  
+""",
+
+    "微信号是多少": """
+请添加我们的微信进行即时沟通：  
+微信号：my_wechat_id  
+添加后会有专人尽快与您对接。  
+""",
+
+    "邮箱是多少": """
+· 商务合作／咨询：contact@example.com  
+· 技术支持：tech_lead@example.com  
+我们会在1-2个工作日内回复。  
+""",
+
+    "工作时间": """
+· 周一—周五：09:00–18:00  
+· 周末和法定节假日：休息  
+如需24小时支持，请提前预约或使用微信联系。  
+""",
+
+    # —— 价值观与技术立场 —— #
+    "你支持开源吗": """
+我们支持开源精神，鼓励社区协作与代码共享；  
+同时也理解商业闭源模型的价值和必要性。  
+无论是开源项目还是闭源产品，只要能为客户创造价值，  
+我们都愿意提供技术支持和合作。  
+""",
+
+    "你支持闭源吗": """
+我们认可闭源软件在商业模式、知识产权保护和持续盈利方面的优势；  
+也倡导在合适场景下开放API或模块化接口，兼顾安全与可扩展。  
+""",
+
+    "你反对垄断吗": """
+我们反对滥用市场支配地位的垄断行为，  
+主张公平竞争、开放生态与多方共赢。  
+""",
+
+    "你支持可持续发展吗": """
+可持续发展是我们的核心理念之一，  
+我们在产品和运营中践行环保、节能减排和社会责任。  
+""",
+
+    "你反对数据滥用吗": """
+我们坚决反对未经同意的数据采集和滥用，  
+严格遵守《个人信息保护法》等相关法规，  
+以技术和制度保障用户隐私和数据安全。  
+""",
+
+    "你们的核心价值观是什么": """
+我们的核心价值观：  
+1. 客户至上：倾听需求，超越期望  
+2. 创新驱动：技术+场景，持续迭代  
+3. 诚信合作：透明沟通，信守承诺  
+4. 开放共享：支持开源也支持闭源，共创生态  
+5. 社会责任：关注环保、数据安全与公益  
+"""
+})
 
 # 这是你“append”想要添加的内容，改成字典
 addition_dict = {
@@ -121,6 +219,203 @@ addition_dict = {
 4. 静脉止血带：仅在生命危险时短时间使用；
 5. 专业救援：尽快送往医院，由医务人员处理。"""
 }
+
+
+
+
+
+```python
+QA_DICT = {
+    # —— 协同过滤算法 —— #
+    "协同过滤算法实现": """
+下面是一个基于用户–物品矩阵的协同过滤（UserCF）简单实现，使用 NumPy 计算用户相似度并给出推荐：
+
+import numpy as np
+
+# 示例用户–物品评分矩阵，行：用户，列：物品
+R = np.array([
+    [5, 0, 3, 0, 2],
+    [4, 0, 4, 3, 0],
+    [1, 2, 0, 5, 4],
+    [0, 3, 5, 4, 0],
+    [2, 4, 1, 0, 3]
+], dtype=float)
+
+def cosine_similarity(a: np.ndarray, b: np.ndarray) -> float:
+    if np.linalg.norm(a)==0 or np.linalg.norm(b)==0:
+        return 0.0
+    return (a @ b) / (np.linalg.norm(a) * np.linalg.norm(b))
+
+def usercf_recommend(R: np.ndarray, user_id: int, top_k: int = 2, n_rec: int = 3):
+    # 计算用户相似度矩阵
+    n_users = R.shape[0]
+    sim = np.zeros((n_users, n_users))
+    for i in range(n_users):
+        for j in range(n_users):
+            sim[i,j] = cosine_similarity(R[i], R[j])
+    # 找到 top_k 最相似用户
+    neighbors = np.argsort(-sim[user_id])[:top_k]
+    # 预测未评分物品的分数
+    scores = np.zeros(R.shape[1])
+    for item in range(R.shape[1]):
+        if R[user_id, item] == 0:
+            # 加权平均
+            scores[item] = np.dot(sim[user_id, neighbors], R[neighbors, item]) / (np.sum(sim[user_id, neighbors]) + 1e-9)
+    # 推荐分数最高的 n_rec 个物品
+    rec_items = np.argsort(-scores)[:n_rec]
+    return rec_items, scores[rec_items]
+
+# 示例：为用户 0 推荐
+items, scores = usercf_recommend(R, user_id=0, top_k=2, n_rec=3)
+print("推荐物品索引：", items, "预测分数：", scores)
+""",
+
+    # —— 余弦相似度 —— #
+    "怎么计算余弦相似度": """
+下面是使用 NumPy 计算向量余弦相似度的函数示例：
+
+import numpy as np
+
+def cosine_similarity(a: np.ndarray, b: np.ndarray) -> float:
+    \"\"\"计算两个向量 a、b 的余弦相似度\"\"\"
+    norm_a = np.linalg.norm(a)
+    norm_b = np.linalg.norm(b)
+    if norm_a == 0 or norm_b == 0:
+        return 0.0
+    return float(np.dot(a, b) / (norm_a * norm_b))
+
+# 示例
+v1 = np.array([1.0, 2.0, 3.0])
+v2 = np.array([2.0, 3.0, 4.0])
+print("余弦相似度：", cosine_similarity(v1, v2))
+""",
+
+    # —— L2 距离 —— #
+    "怎么计算L2距离": """
+下面是使用 NumPy 计算欧氏（L2）距离的函数示例：
+
+import numpy as np
+
+def l2_distance(a: np.ndarray, b: np.ndarray) -> float:
+    \"\"\"计算两个向量 a、b 的欧氏距离\"\"\"
+    return float(np.linalg.norm(a - b))
+
+# 示例
+v1 = np.array([1.0, 2.0, 3.0])
+v2 = np.array([2.0, 3.0, 4.0])
+print("L2 距离：", l2_distance(v1, v2))
+""",
+
+    # —— 基于 BERT 的问答示例 —— #
+    "BERT问答示例": """
+下面演示如何使用 Hugging Face Transformers 中的 BERT 模型做简单问答（QA）。  
+请先安装依赖：pip install transformers torch
+
+from transformers import BertForQuestionAnswering, BertTokenizer
+import torch
+
+# 选择预训练模型
+MODEL_NAME = "bert-large-uncased-whole-word-masking-finetuned-squad"
+tokenizer = BertTokenizer.from_pretrained(MODEL_NAME)
+model = BertForQuestionAnswering.from_pretrained(MODEL_NAME)
+
+def bert_qa(question: str, context: str) -> str:
+    inputs = tokenizer.encode_plus(question, context, return_tensors="pt")
+    input_ids = inputs["input_ids"]
+    attention_mask = inputs["attention_mask"]
+    # 模型前向
+    outputs = model(input_ids, attention_mask=attention_mask)
+    start_scores, end_scores = outputs.start_logits, outputs.end_logits
+    # 获取答案片段
+    start = torch.argmax(start_scores)
+    end = torch.argmax(end_scores) + 1
+    answer_tokens = input_ids[0][start:end]
+    return tokenizer.decode(answer_tokens, skip_special_tokens=True)
+
+# 示例调用
+context = (
+    "Transformers provides thousands of pretrained models to perform tasks "
+    "on different modalities such as text, vision, and audio."
+)
+question = "What does Transformers provide?"
+print("Answer:", bert_qa(question, context))
+""",
+
+    # —— 综合智能问答流程示例 —— #
+    "智能问答完整流程": """
+下面示例整合了字典问答、余弦相似度检索、BERT 本地问答与 OpenAI API 调用：  
+
+```python
+import os
+import numpy as np
+from transformers import BertForQuestionAnswering, BertTokenizer
+import torch
+import openai
+
+# 1. 问答字典
+QA_DICT = {...}  # 上面所有条目
+
+# 2. 简易 Embedding：字符均值
+def fake_embedding(text: str) -> np.ndarray:
+    arr = np.array([ord(c) for c in text], dtype=float)
+    return np.array([arr.mean()]) if arr.size else np.zeros(1)
+
+# 3. 余弦相似度
+def cosine_similarity(a, b):
+    if np.linalg.norm(a)==0 or np.linalg.norm(b)==0: return 0.0
+    return float(np.dot(a, b)/(np.linalg.norm(a)*np.linalg.norm(b)))
+
+# 4. BERT QA 初始化
+bert_name = "bert-large-uncased-whole-word-masking-finetuned-squad"
+tokenizer = BertTokenizer.from_pretrained(bert_name)
+bert_model = BertForQuestionAnswering.from_pretrained(bert_name)
+
+def bert_qa(question, context):
+    inputs = tokenizer.encode_plus(question, context, return_tensors="pt")
+    s, e = bert_model(**inputs).start_logits, bert_model(**inputs).end_logits
+    start, end = torch.argmax(s), torch.argmax(e) + 1
+    return tokenizer.decode(inputs["input_ids"][0][start:end], skip_special_tokens=True)
+
+# 5. OpenAI API
+openai.api_key = os.getenv("OPENAI_API_KEY")
+def query_openai(prompt: str) -> str:
+    resp = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[{"role":"user","content":prompt}],
+        temperature=0.6, max_tokens=200
+    )
+    return resp.choices[0].message.content.strip()
+
+# 6. 问答主流程
+keys = list(QA_DICT.keys())
+embs = [fake_embedding(k) for k in keys]
+
+def get_answer(query: str, threshold=0.8) -> str:
+    # 字典精确匹配
+    if query in QA_DICT:
+        return QA_DICT[query]
+    # 相似度检索
+    q_emb = fake_embedding(query)
+    sims = [cosine_similarity(q_emb, e) for e in embs]
+    idx, score = max(enumerate(sims), key=lambda x: x[1])
+    if score >= threshold:
+        return f"(匹配到「{keys[idx]}」、相似度={score:.2f})\n" + QA_DICT[keys[idx]]
+    # 本地 BERT 问答
+    example_context = "这里填写上下文，用于 BERT 问答示例。"
+    return bert_qa(query, example_context)
+
+# 7. 测试
+for q in ["怎么计算余弦相似度？", "协同过滤算法", "What does Transformers provide?"]:
+    print("Q:", q)
+    print("A:", get_answer(q))
+    print("-"*40)
+```  
+"""
+}
+
+
+
+
 
 # 用 update 合并追加
 QA_DICT.update(addition_dict)
