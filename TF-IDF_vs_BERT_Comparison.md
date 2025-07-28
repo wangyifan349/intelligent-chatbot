@@ -1,102 +1,102 @@
-# ✨ TF-IDF 与 BERT 上下文向量对比解析
+# ✨ TF-IDF vs BERT Contextual Embeddings: A Comparative Analysis
 
-本文从**背景原理、表示形式、优缺点、典型应用、性能对比和示例代码**等方面，全面对比传统的 TF-IDF 表示方法与基于 BERT 的上下文向量表示方法，帮助你快速理解两者的异同及应用场景。🚀
+This article provides a comprehensive comparison between traditional TF-IDF representation and BERT-based contextual embedding methods from the perspectives of **background theory, representation forms, advantages and disadvantages, typical applications, performance comparisons, and example code**, helping you quickly understand their differences and use cases. 🚀
 
 ---
 
-## 一、背景与原理 🧠
+## 1. Background and Theory 🧠
 
 ### 1. TF-IDF
-- **全称**：Term Frequency–Inverse Document Frequency。  
-- **核心思想**：
-  - **TF（词频）**：词在文档中出现频率，代表重要性。  
-  - **IDF（逆文档频率）**：衡量词语在语料库中的区分度，计算公式：  
-  \[
-  \text{IDF}(w) = \log \frac{N}{1 + \text{df}(w)}
-  \]
-  其中，\(N\) 是总文档数，\(\text{df}(w)\) 是包含词 \(w\) 的文档数。  
-- **表示方法**：每篇文档被转成一个稀疏的 |V| 维向量（词表大小），每个维度是 TF × IDF。
+- **Full name**: Term Frequency–Inverse Document Frequency.  
+- **Core idea**:
+  - **TF (Term Frequency)**: The frequency a word appears in a document, representing its importance.  
+  - **IDF (Inverse Document Frequency)**: Measures the discriminative power of a word within the corpus, calculated as:  
+   
+    IDF(w) = log ( N / (1 + df(w)) )
+  
+    where N is the total number of documents, and df(w) is the number of documents containing the word w.  
+- **Representation**: Each document is converted into a sparse |V|-dimensional vector (vocabulary size), and each dimension is TF × IDF.
 
 ---
 
-### 2. BERT 上下文向量
-- **全称**：Bidirectional Encoder Representations from Transformers。  
-- **核心机制**：
-  - 利用多层 **Transformer Encoder**，通过**双向 Masked Language Model (MLM)**预训练学习语言表示。  
-  - 结合左右上下文生成**动态、上下文相关的词向量**。  
-- **表示方法**：输入文本分词后，通过自注意力网络得到每个 Token 的向量。[CLS] 或池化向量作为句子级表示。
+### 2. BERT Contextual Embeddings
+- **Full name**: Bidirectional Encoder Representations from Transformers.  
+- **Core mechanism**:
+  - Uses multi-layer **Transformer Encoder** pretrained with a **bidirectional Masked Language Model (MLM)** to learn language representations.  
+  - Combines left and right context to generate **dynamic, context-sensitive word embeddings**.  
+- **Representation**: Input text is tokenized, and embeddings for each token are obtained via the self-attention network. The [CLS] token or a pooled embedding serves as the sentence-level representation.
 
 ---
 
-## 二、表示形式对比 🆚
+## 2. Comparison of Representation Forms 🆚
 
-| 特性             | TF-IDF                      | BERT 上下文向量               |
-|------------------|-----------------------------|------------------------------|
-| 向量维度         | 词表大小 |V|，高维且随语料增长 | 固定维度，常见768/1024维     |
-| 向量稀疏/密集    | 稀疏                        | 稠密                         |
-| 上下文感知       | ❌ 无                       | ✅ 有（动态随上下文变化）    |
-| 词义多义区分     | ❌ 无                       | ✅ 有，能区分同形异义词      |
-| 语义相似度捕捉   | 受限于共现统计              | 通过深层自注意力捕捉复杂语义|
-| 训练与推理成本   | 极低                        | 高（需GPU支持）              |
-| 训练数据需求     | 无需预训练，统计计算即可    | 需大量语料预训练             |
-| 下游任务适应性   | 单纯特征，无微调            | 支持端到端微调，性能优异     |
+| Feature              | TF-IDF                                     | BERT Contextual Embeddings      |
+|----------------------|--------------------------------------------|--------------------------------|
+| Vector Dimension     | Vocabulary size \|V\|, high-dimensional and grows with corpus | Fixed dimension, typically 768 or 1024 |
+| Vector Sparsity      | Sparse                                     | Dense                          |
+| Context Awareness    | ❌ None                                    | ✅ Yes (dynamic, changes with context) |
+| Polysemy Handling    | ❌ None                                    | ✅ Yes, can distinguish homonyms|
+| Semantic Similarity  | Limited by co-occurrence statistics        | Captures complex semantics via deep self-attention |
+| Training & Inference Cost | Very low                              | High (requires GPU support)     |
+| Training Data Demand | No pretraining required; purely statistical | Requires large-scale pretraining |
+| Downstream Task Adaptability | Pure feature extraction, no fine-tuning | Supports end-to-end fine-tuning, excels in performance |
 
 ---
 
-## 三、优缺点总结 ✅❌
+## 3. Advantages and Disadvantages ✅❌
 
 ### TF-IDF
-**优点：**  
-- 实现简单，计算效率高；  
-- 资源占用低，适合大规模稀疏数据；  
-- 结果易解释，每个维度词义明确。  
+**Advantages:**  
+- Simple implementation and high computational efficiency;  
+- Low resource consumption, suitable for large sparse data;  
+- Results are easy to interpret as each dimension corresponds to a specific word.  
 
-**缺点：**  
-- 维度高且稀疏，存储成本大；  
-- 不考虑词序与上下文，无法辨别多义词；  
-- 缺乏深层语义理解能力。  
-
----
-
-### BERT 上下文向量
-**优点：**  
-- 动态表达词义，能捕捉复杂语义关系；  
-- 预训练+微调范式，适应多样化任务；  
-- 输出固定维度稠密向量，方便深度模型处理。  
-
-**缺点：**  
-- 训练与推理计算资源消耗大；  
-- 推理延迟较高，实时性场景挑战大；  
-- 模型体积大，部署成本较高。  
+**Disadvantages:**  
+- High and sparse dimensionality leads to high storage costs;  
+- Ignores word order and context, cannot distinguish polysemy;  
+- Lacks deep semantic understanding capability.  
 
 ---
 
-## 四、典型应用场景 🔍
+### BERT Contextual Embeddings
+**Advantages:**  
+- Dynamically expresses word meaning and captures complex semantic relationships;  
+- Pretraining plus fine-tuning paradigm adapts to diverse tasks;  
+- Outputs fixed-dimension dense vectors, convenient for deep learning models.  
 
-| 应用场景       | TF-IDF                                  | BERT 上下文向量                        |
-|----------------|----------------------------------------|--------------------------------------|
-| 文本检索       | 基于关键词匹配，快速但语义有限           | 语义检索，支持模糊和上下文匹配，更精准   |
-| 文本分类       | 传统机器学习方法（SVM、LR）输入特征       | 深度学习微调，准确率更高                   |
-| 文本聚类       | 基于稀疏向量的聚类（KMeans、LDA）        | 基于稠密向量的近似最近邻搜索（Faiss等）   |
-| 问答系统       | 关键词检索为主                           | 结合深度语义匹配与上下文理解               |
-| 语义相似度计算 | 简单的词重叠或向量余弦相似度              | 上下文感知的语义相似度计算，更鲁棒          |
-
----
-
-## 五、性能对比示例 ⚔️
-
-| 方法            | 准确率 (Accuracy) | 训练时长    | 推理延迟    |
-|-----------------|-------------------|-------------|-------------|
-| TF-IDF + SVM    | 0.82              | 约 1 分钟   | < 1 毫秒    |
-| BERT Fine-tune  | 0.91              | 约 30 分钟  | 20–50 毫秒  |
-
-> **提示**：性能受数据集、硬件和参数影响，以上数据仅供参考。
+**Disadvantages:**  
+- High computational cost during training and inference;  
+- Higher inference latency, challenging in real-time scenarios;  
+- Large model size leads to higher deployment costs.  
 
 ---
 
-## 六、示例代码 🚀
+## 4. Typical Application Scenarios 🔍
 
-下面用 Python 代码演示如何用 `scikit-learn` 生成 TF-IDF 特征及训练 SVM，和使用 Hugging Face Transformers 进行 BERT 微调。
+| Application        | TF-IDF                                   | BERT Contextual Embeddings           |
+|--------------------|-----------------------------------------|-------------------------------------|
+| Text Retrieval     | Keyword-based matching, fast but limited semantic understanding | Semantic search, supports fuzzy and contextual matching, more precise |
+| Text Classification | Used as features for traditional ML models (SVM, LR) | Fine-tuned deep models with higher accuracy |
+| Text Clustering    | Clustering based on sparse vectors (KMeans, LDA) | Approximate nearest neighbor search based on dense vectors (Faiss, etc.) |
+| Question Answering | Mainly keyword retrieval                 | Combines deep semantic matching with contextual understanding |
+| Semantic Similarity| Simple word overlap or cosine similarity | Context-aware semantic similarity calculation, more robust |
+
+---
+
+## 5. Performance Comparison Example ⚔️
+
+| Method            | Accuracy          | Training Time   | Inference Latency |
+|-------------------|-------------------|-----------------|-------------------|
+| TF-IDF + SVM      | 0.82              | Approx. 1 minute| < 1 millisecond   |
+| BERT Fine-tune    | 0.91              | Approx. 30 minutes| 20–50 milliseconds|
+
+> **Note**: Performance depends on datasets, hardware, and parameters; data above are for reference only.
+
+---
+
+## 6. Example Code 🚀
+
+Below is Python code demonstrating how to generate TF-IDF features using `scikit-learn` and train an SVM, as well as how to fine-tune BERT using Hugging Face Transformers.
 
 ```python
 
@@ -253,13 +253,14 @@ if __name__ == '__main__':
             print(f"回答内容：{matched_answer}")
         print("-" * 40)
 
+```
+
 ---
 
+## 7. Summary 🎯
 
-## 七、小结 🎯
+- **TF-IDF**: Traditional and lightweight, fast computation, suitable for resource-limited or real-time scenarios.  
+- **BERT Contextual Embeddings**: Dependent on large-scale pretraining, with strong semantic understanding capabilities, ideal for deep NLP tasks requiring high accuracy.  
+- **Usage Suggestion**: Choose flexibly based on task requirements, hardware resources, and latency needs; combined approaches are also common (e.g., initial filtering with TF-IDF, then precise re-ranking using BERT).
 
-- **TF-IDF**：传统且轻量，计算快，适合资源有限或实时性高的场景。  
-- **BERT 上下文向量**：依赖大规模预训练，具备强语义理解能力，适合追求效果的深度NLP任务。  
-- **选用建议**：根据任务需求、硬件资源及时效性平衡选择，灵活组合也常见（如结合 TF-IDF 初筛，再用 BERT 精筛）。  
-
---
+---
