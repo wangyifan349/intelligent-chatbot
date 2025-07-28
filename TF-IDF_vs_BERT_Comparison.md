@@ -264,3 +264,10 @@ if __name__ == '__main__':
 - **Usage Suggestion**: Choose flexibly based on task requirements, hardware resources, and latency needs; combined approaches are also common (e.g., initial filtering with TF-IDF, then precise re-ranking using BERT).
 
 ---
+
+GPT uses a pure decoder stack in which each layer’s self-attention attends only to the current and all previously generated tokens. It is pretrained autoregressively to predict the next token, so it can generate text only from left to right and excels at open-domain free-form generation.
+
+BERT uses a pure encoder stack in which each layer’s self-attention attends to all positions in the input sequence bidirectionally. Through tasks like Masked Language Modeling (randomly masking and predicting tokens), it learns rich context representations by integrating both preceding and following context. BERT is typically applied to classification, sequence labeling, and extractive question answering but does not perform autoregressive text generation itself.
+
+T5 adopts the standard encoder–decoder architecture: its encoder uses bidirectional self-attention to capture the full input context, and its decoder generates output tokens autoregressively with unidirectional self-attention plus cross-attention over the encoder’s outputs. It is pretrained via span-corruption (masking and reconstructing contiguous spans) and unifies all downstream tasks into a text-to-text format, thereby supporting both understanding and generation.
+
